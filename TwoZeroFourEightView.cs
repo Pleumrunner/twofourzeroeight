@@ -25,9 +25,20 @@ namespace twozerofoureight
             controller.ActionPerformed(TwoZeroFourEightController.LEFT);
         }
 
+        public bool Full(Model m)
+        {
+            return ((TwoZeroFourEightModel)m).isFull();
+        }
+
+
         public void Notify(Model m)
         {
             UpdateBoard(((TwoZeroFourEightModel) m).GetBoard());
+            label1.Text = "SCORE" + "    " + m.GetScore();
+            if (m.GetOver() && Full(m))
+            {
+                label3.Text = "GAME OVER";
+            }
         }
 
         private void UpdateTile(Label l, int i)
@@ -52,8 +63,20 @@ namespace twozerofoureight
                 case 8:
                     l.BackColor = Color.Red;
                     break;
-                default:
+                case 16:
                     l.BackColor = Color.Green;
+                    break;
+                case 32:
+                    l.BackColor = Color.GreenYellow;
+                    break;
+                case 64:
+                    l.BackColor = Color.Tomato;
+                    break;
+                case 128:
+                    l.BackColor = Color.Goldenrod;
+                    break;
+                default:
+                    l.BackColor = Color.Gold;
                     break;
             }
         }
@@ -97,5 +120,23 @@ namespace twozerofoureight
             controller.ActionPerformed(TwoZeroFourEightController.DOWN);
         }
 
+        private void btnUp_PreviewKeyDown(object sender, PreviewKeyDownEventArgs e)
+        {
+            switch (e.KeyCode)
+            {
+                case Keys.Down:
+                    controller.ActionPerformed(TwoZeroFourEightController.DOWN);
+                    break;
+                case Keys.Right:
+                    controller.ActionPerformed(TwoZeroFourEightController.RIGHT);
+                    break;
+                case Keys.Up:
+                    controller.ActionPerformed(TwoZeroFourEightController.UP);
+                    break;
+                case Keys.Left:
+                    controller.ActionPerformed(TwoZeroFourEightController.LEFT);
+                    break;
+            }
+        }
     }
 }

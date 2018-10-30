@@ -11,6 +11,7 @@ namespace twozerofoureight
         protected int boardSize; // default is 4
         protected int[,] board;
         protected Random rand;
+        protected bool check = false;
 
         public TwoZeroFourEightModel() : this(4)
         {
@@ -27,9 +28,12 @@ namespace twozerofoureight
             boardSize = size;
             board = new int[boardSize, boardSize];
             var range = Enumerable.Range(0, boardSize);
-            foreach(int i in range) {
-                foreach(int j in range) {
-                    board[i,j] = 0;
+
+            foreach (int i in range)
+            {
+                foreach (int j in range)
+                {
+                    board[i, j] = 0;
                 }
             }
             rand = new Random();
@@ -38,18 +42,73 @@ namespace twozerofoureight
         }
 
         private int[,] Random(int[,] input)
-        {
-            while (true)
+        { 
+            while (!isFull())
             {
                 int x = rand.Next(boardSize);
                 int y = rand.Next(boardSize);
                 if (board[x, y] == 0)
                 {
                     board[x, y] = 2;
+                    score += 2;
                     break;
                 }
             }
+            over = CheckOver();
+
             return input;
+        }
+        public bool isFull()
+        {
+            int cB = 0;
+            for (int i = 0; i < 4; i++)
+            {
+                for (int j = 0; j < 4; j++)
+                {
+                    if (board[i, j] != 0)
+                    {
+                        cB++;
+                    }
+                }
+            }
+            if (cB == 16)
+            {
+                return true;
+            }
+            else
+            {
+                return false;
+            }
+        }
+        public bool CheckOver()
+        {
+            int checkX = 0;
+            int checkY = 0;
+            for(int i = 0; i<4; i++)
+            {
+                for(int j = 0; j<3; j++)
+                {
+                    if(board[j,i] == board[j+1,i])
+                    {
+                        checkX++;
+                    }
+                }
+            }
+            for(int i = 0; i<4; i++)
+            {
+                for(int j = 0; j<3; j++)
+                {
+                    if(board[i,j] == board[i,j+1])
+                    {
+                        checkY++;
+                    }
+                }
+            }
+            if(checkY == 0 && checkX == 0)
+            {
+                return true;
+            }
+            return false;
         }
 
         public void PerformDown()
@@ -262,3 +321,4 @@ namespace twozerofoureight
         }
     }
 }
+
